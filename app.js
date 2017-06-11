@@ -192,7 +192,7 @@ function validateMessage(event){
 	if(event.message.text == 'hello' || 'whats up' || 'hey'){
 		console.log("Message is hello");
 		//check if session exists in db..i.e check if his msg_id exists in db
-		var queryToCheckIfSessionExist = "SELECT state_counter from user where messenger_id='"+event.sender.id+"'";
+		var queryToCheckIfSessionExist = "SELECT state_counter from user where messenger_id="+event.sender.id+"";
 		mysql.fetchData(
 				function(err, results) {
 					if (err) {
