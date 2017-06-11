@@ -60,8 +60,43 @@ function validateMessage(event){
 	/*if(event.message.text == 'hi'){
 		sendMessage(event, reply);
 	}*/
-	if(!(event.message.text == 'hello' || 'whats up' || 'hey')){
-		qArray = ["Do you like math?", "Do you know what 3x4 is?", "How about, if you made 10 Syrian Pounds, what percentage would you have if you bought a 2 pound 50 candy?", "What about stories? Do you like to read?", "What\'s the third letter of the word \'Power\'?", "What\'s the subject\'s intent in the sentence, \"Mohammed wanted me to come to his room after class\"?", "Do you know what a sanitary pad is?", "How do you put on condoms?", "How do you know if you have an STD?", "How is your Turksish? Can you say, \"What\'s your name\" in Turkish?"];
+	var qArray = ["Do you like math?", "Do you know what 3x4 is?", "How about, if you made 10 Syrian Pounds, what percentage would you have if you bought a 2 pound 50 candy?", "What about stories? Do you like to read?", "What\'s the third letter of the word \'Power\'?", "What\'s the subject\'s intent in the sentence, \"Mohammed wanted me to come to his room after class\"?", "Do you know what a sanitary pad is?", "How do you put on condoms?", "How do you know if you have an STD?", "How is your Turksish? Can you say, \"What\'s your name\" in Turkish?"];
+	if(event.message.text == "Start" || "start"){
+		console.log("Right!");
+		
+		var qq = "SELECT * from user where email = 'neha2k74u@gmail.com'";
+		mysql.fetchData(
+				function(err, results) {
+					if (err) {
+						console.log("Error: Some problem with db"+err);
+						throw err;
+					} else {
+						console.log("Messenger id updated");
+						if(results.state_counter> 8){
+								reply ="You've already taken up this quiz. Thank you!";
+						}else{
+							reply = qArray[results.state_counter];
+						}
+						
+						var qq1 ="Update user set state_counter=state_counter+1 where email ='neha2k74u@gmail.com'";
+						mysql.fetchData(
+								function(err, results) {
+									if (err) {
+										console.log("Error: Some problem with db"+err);
+										throw err;
+									} else {
+										console.log("Messenger id updated");	
+										sendMessage(event, reply);
+										
+									}
+
+								}, qq1);
+					}
+
+				}, qq);
+	}
+/*	else if(!(event.message.text == 'hello' || 'whats up' || 'hey')){
+		
 		aArray = ["yes", "12", "10", "yes", "w", "Mohammed wanted me", "yes", "", "", ""];
 		//Check text with email of db
 		//if its an email then update the messenger id
@@ -175,12 +210,12 @@ function validateMessage(event){
 
 						}
 
-						/*else{//Ask user his email id
+						else{//Ask user his email id
 						reply = "What is your email?"
 							//answer ="abhiram.304@gmail.com";
 						//Update messenger_id
 						sendMessage(event, reply); 
-					}*/
+					}
 
 					} 
 
@@ -188,8 +223,8 @@ function validateMessage(event){
 
 
 
-	}
-	if(event.message.text == 'hello' || 'whats up' || 'hey'){
+	}*/
+/*	else if(event.message.text == 'hello' || 'whats up' || 'hey'){
 		console.log("Message is hello");
 		//check if session exists in db..i.e check if his msg_id exists in db
 		var queryToCheckIfSessionExist = "SELECT * from chack.user where messenger_id="+event.sender.id+"";
@@ -230,14 +265,14 @@ function validateMessage(event){
 
 		//If answered all questions, tell answer that he has already taken this quiz
 		//Else continue from where he paused
-	} 
-	else if(event.message.text == 'bye' || 'good bye'){
+	} */
+	/*else if(event.message.text == 'bye' || 'good bye'){
 		//check if session exists
 		reply = "bye";
 		sendMessage(event, reply);
-	}
+	}*/
 	else{
-		reply = "I can't understand";
+		reply = "I can't get you. Please do say start to start the quiz";
 		sendMessage(event, reply);
 	}
 	//Check if the email id is valid for the first time
