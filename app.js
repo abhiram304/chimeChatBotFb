@@ -83,7 +83,7 @@ function validateMessage(event){
 	if(event.message.text == "Start" ){
 		console.log("Right!");
 		
-		var qq = "SELECT * from user where email = 'neha2k74u@gmail.com'";
+		/*var qq = "SELECT * from user where email = 'neha2k74u@gmail.com'";
 		mysql.fetchData(
 				function(err, results) {
 					if (err) {
@@ -113,7 +113,11 @@ function validateMessage(event){
 					}
 
 				}, qq);
-	}
+*/	
+		var rand = myArray[Math.floor(Math.random() * qArray.length)];
+		reply = rand;
+		sendMessage(event, reply);
+		}
 	else{
 		reply = "I can't get you. Please do say start to start the quiz";
 		sendMessage(event, reply);
