@@ -39,7 +39,8 @@ app.get('/webhook', function(req, res) {
 });
 //Post messages
 app.post('/webhook', function(req, res)  {
-	  console.log(req.body);
+	console.log("----------------------Request.user: "+req.user);
+	console.log(req.body);
 	  if (req.body.object === 'page') {
 	    req.body.entry.forEach(function(entry) {
 	      entry.messaging.forEach(function(event){
@@ -52,6 +53,7 @@ app.post('/webhook', function(req, res)  {
 	  }
 	});
 function sendMessage(event) {
+	
 	  var sender = event.sender.id;
 	  var text = "roger that";
 	  console.log("SENDER: "+sender);
