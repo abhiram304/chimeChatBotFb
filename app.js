@@ -38,94 +38,38 @@ app.get('/webhook', function(req, res) {
 	}
 });
 //Post messages
-app.post('/webhook', function (req, res) {
-	var data = req.body;
-	console.log("Here"+JSON.stringify(data.object));
-	// Make sure this is a page subscription
-	if (data.object === 'page') {
-		console.log("Page");
-		// Iterate over each entry - there may be multiple if batched
-		data.entry.forEach(function(entry) {
-			var pageID = entry.id;
-			var timeOfEvent = entry.time;
-
-			// Iterate over each messaging event
-			entry.messaging.forEach(function(event) {
-				if (event.message) {
-					console.log("Eent"+event);
-					receivedMessage(event);
-				} else {
-					console.log("Webhook received unknown event: ", event);
-				}
-			});
-		});
-		   res.status(200);
+app.post('/webhook', function(req, res)  {
+	  console.log(req.body);
+	  if (req.body.object === 'page') {
+	    req.body.entry.forEach(function(entry) {
+	      entry.messaging.forEach(function(event){
+	        if (event.message && event.message.text) {
+	          sendMessage(event);
+	        }
+	      });
+	    });
+	    res.status(200).end();
 	  }
 	});
-	  
-function receivedMessage(event) {
-	  var senderID = event.sender.id;
-	  var recipientID = event.recipient.id;
-	  var timeOfMessage = event.timestamp;
-	  var message = event.message;
+function sendMessage(event) {
+	  var sender = event.sender.id;
+	  var text = "roger that";
 
-	  console.log("Received message for user %d and page %d at %d with message:", 
-	    senderID, recipientID, timeOfMessage);
-	  console.log(JSON.stringify(message));
-
-	  var messageId = message.mid;
-
-	  var messageText = message.text;
-	  var messageAttachments = message.attachments;
-	  
-	  if (messageText) {
-		  switch (messageText) {
-	      case 'generic':
-	        sendGenericMessage(senderID);
-	        break;
-
-	      default:
-	        sendTextMessage(senderID, messageText);
-	    }
-	  } 
-	  else if (messageAttachments) {
-	    sendTextMessage(senderID, "Message with attachment received");
-	  }
-	}
-		
-function sendTextMessage(recipientId, messageText) {
-	  var messageData = {
-	    recipient: {
-	      id: recipientId
-	    },
-	    message: {
-	      text: "Helloooo"
-	    }
-	  };
-
-	  callSendAPI(messageData);
-	}
-
-function callSendAPI(messageData) {
 	  request({
-	    uri: 'https://graph.facebook.com/v2.6/me/messages',
-	    qs: { access_token: "EAAGCu5vOWZA8BACWsfqfZCz6ZCjBZAFwpfkMF8zfDqNrBwnGqpUunHFeBQFdEPFS20gnsQjYvHkm2E7AR4d0VLE25PHElmFXZBYJqUXQm1L9izZCJIod4hQOrrbF7mSLzL7RCqClVwSumZAqV1EIBSxOcjZBVfjHMnrF5vFrH0aodQZDZD" },
+	    url: 'https://graph.facebook.com/v2.6/me/messages',
+	    qs: {access_token: "EAAGCu5vOWZA8BACWsfqfZCz6ZCjBZAFwpfkMF8zfDqNrBwnGqpUunHFeBQFdEPFS20gnsQjYvHkm2E7AR4d0VLE25PHElmFXZBYJqUXQm1L9izZCJIod4hQOrrbF7mSLzL7RCqClVwSumZAqV1EIBSxOcjZBVfjHMnrF5vFrH0aodQZDZD"},
 	    method: 'POST',
-	    json: messageData
-
-	  }, function (error, response, body) {
-	    if (!error && response.statusCode == 200) {
-	      var recipientId = body.recipient_id;
-	      var messageId = body.message_id;
-
-	      console.log("Successfully sent generic message with id %s to recipient %s", 
-	        messageId, recipientId);
-	    } else {
-	      console.error("Unable to send message.");
-	      console.error(response);
-	      console.error(error);
+	    json: {
+	      recipient: {id: sender},
+	      message: {text: text}
 	    }
-	  });  
+	  }, function (error, response) {
+	    if (error) {
+	        console.log('Error sending message: ', error);
+	    } else if (response.body.error) {
+	        console.log('Error: ', response.body.error);
+	    }
+	  });
 	}
 
 
