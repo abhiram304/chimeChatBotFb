@@ -54,7 +54,7 @@ app.post('/webhook', function(req, res)  {
 function sendMessage(event) {
 	  var sender = event.sender.id;
 	  var text = "roger that";
-
+	  console.log("SENDER: "+sender);
 	  request({
 	    url: 'https://graph.facebook.com/v2.6/me/messages',
 	    qs: {access_token: "EAAGCu5vOWZA8BACWsfqfZCz6ZCjBZAFwpfkMF8zfDqNrBwnGqpUunHFeBQFdEPFS20gnsQjYvHkm2E7AR4d0VLE25PHElmFXZBYJqUXQm1L9izZCJIod4hQOrrbF7mSLzL7RCqClVwSumZAqV1EIBSxOcjZBVfjHMnrF5vFrH0aodQZDZD"},
