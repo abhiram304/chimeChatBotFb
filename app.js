@@ -57,7 +57,9 @@ function validateMessage(event){
 	var text = event.message.text;
 	var reply = "I couldn't understand";
 	var sender = event.sender.id;
-
+	if(event.message.text == 'hi'){
+		sendMessage(event, reply);
+	}
 	if(!(event.message.text == 'hello' || 'whats up' || 'hey')){
 
 		qArray = ["Do you like math?", "Do you know what 3x4 is?", "How about, if you made 10 Syrian Pounds, what percentage would you have if you bought a 2 pound 50 candy?", "What about stories? Do you like to read?", "What\'s the third letter of the word \'Power\'?", "What\'s the subject\'s intent in the sentence, \"Mohammed wanted me to come to his room after class\"?", "Do you know what a sanitary pad is?", "How do you put on condoms?", "How do you know if you have an STD?", "How is your Turksish? Can you say, \"What\'s your name\" in Turkish?"];
@@ -190,7 +192,6 @@ function validateMessage(event){
 	}
 
 	if(event.message.text == 'hello' || 'whats up' || 'hey'){
-
 
 		//check if session exists in db..i.e check if his msg_id exists in db
 		var queryToCheckIfSessionExist = "SELECT state_counter from user where messenger_id='"+event.sender.id+"'";
