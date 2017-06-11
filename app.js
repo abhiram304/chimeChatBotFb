@@ -40,7 +40,7 @@ app.get('/webhook', function(req, res) {
 //Post messages
 app.post('/webhook', function (req, res) {
 	var data = req.body;
-	console.log("Here"+data.object);
+	console.log("Here"+JSON.stringify(data.object));
 	// Make sure this is a page subscription
 	if (data.object === 'page') {
 		console.log("Page");
