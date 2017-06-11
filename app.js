@@ -114,7 +114,7 @@ function validateMessage(event){
 
 				}, qq);
 */	
-		var rand = myArray[Math.floor(Math.random() * qArray.length)];
+		var rand = qArray[Math.floor(Math.random() * qArray.length)];
 		reply = rand;
 		sendMessage(event, reply);
 		}
