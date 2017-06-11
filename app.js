@@ -53,7 +53,7 @@ app.post('/webhook', function (req, res) {
 			entry.messaging.forEach(function(event) {
 				if (event.message) {
 					console.log("Eent"+event);
-					//receivedMessage(event);
+					receivedMessage(event);
 				} else {
 					console.log("Webhook received unknown event: ", event);
 				}
