@@ -58,135 +58,136 @@ function validateMessage(event){
 	var reply = "I couldn't understand";
 	var sender = event.sender.id;
 
+	if(!(event.message.text == 'hello' || 'whats up' || 'hey')){
 
-	qArray = ["Do you like math?", "Do you know what 3x4 is?", "How about, if you made 10 Syrian Pounds, what percentage would you have if you bought a 2 pound 50 candy?", "What about stories? Do you like to read?", "What\'s the third letter of the word \'Power\'?", "What\'s the subject\'s intent in the sentence, \"Mohammed wanted me to come to his room after class\"?", "Do you know what a sanitary pad is?", "How do you put on condoms?", "How do you know if you have an STD?", "How is your Turksish? Can you say, \"What\'s your name\" in Turkish?"];
-	aArray = ["yes", "12", "10", "yes", "w", "Mohammed wanted me", "yes", "", "", ""];
-	//Check text with email of db
-	//if its an email then update the messenger id
-	var queryToCheckEmail = "SELECT * from user where email='"+event.message.text+"'";
-	mysql.fetchData(
-			function(err, results) {
-				if (err) {
-					console.log("Error: Some problem with db"+err);
-					throw err;
-				} else {
-					if(results.length >0){
-						//add messenger_id to the row
-						var updateMessengerId = "Update user set messenger_id='"+sender+"' where email='"+event.message.text+"'";
-						mysql.fetchData(
-								function(err, results) {
-									if (err) {
-										console.log("Error: Some problem with db"+err);
-										throw err;
-									} else {
-										console.log("Messenger id updated");	
-									}
+		qArray = ["Do you like math?", "Do you know what 3x4 is?", "How about, if you made 10 Syrian Pounds, what percentage would you have if you bought a 2 pound 50 candy?", "What about stories? Do you like to read?", "What\'s the third letter of the word \'Power\'?", "What\'s the subject\'s intent in the sentence, \"Mohammed wanted me to come to his room after class\"?", "Do you know what a sanitary pad is?", "How do you put on condoms?", "How do you know if you have an STD?", "How is your Turksish? Can you say, \"What\'s your name\" in Turkish?"];
+		aArray = ["yes", "12", "10", "yes", "w", "Mohammed wanted me", "yes", "", "", ""];
+		//Check text with email of db
+		//if its an email then update the messenger id
+		var queryToCheckEmail = "SELECT * from user where email='"+event.message.text+"'";
+		mysql.fetchData(
+				function(err, results) {
+					if (err) {
+						console.log("Error: Some problem with db"+err);
+						throw err;
+					} else {
+						if(results.length >0){
+							//add messenger_id to the row
+							var updateMessengerId = "Update user set messenger_id='"+sender+"' where email='"+event.message.text+"'";
+							mysql.fetchData(
+									function(err, results) {
+										if (err) {
+											console.log("Error: Some problem with db"+err);
+											throw err;
+										} else {
+											console.log("Messenger id updated");	
+										}
 
-								}, updateMessengerId);
+									}, updateMessengerId);
 
-					}
-
-					else{
-						//Check the state count
-						if(results.state_counter<9){
-							//Check answer
-							if(aArray[results.state_counter] ===  text){
-								//Right answer
-								//update the math
-								if(results.state_counter<3){
-									//update maths part
-									var updateMaths = "Update user set math_rating=math_rating+3 where messenger_id='"+sender+"'";
-									mysql.fetchData(
-											function(err, results) {
-												if (err) {
-													console.log("Error: Some problem with db"+err);
-													throw err;
-												} else {
-													console.log("updateMaths rating");	
-
-													var updateStateCounter = "Update user set state_counter=state_counter+1 where messenger_id='"+sender+"'";
-													mysql.fetchData(
-															function(err, results) {
-																if (err) {
-																	console.log("Error: Some problem with db"+err);
-																	throw err;
-																} else {
-																	console.log("state_counter updated");	
-																	reply = qArray[results.state_counter];
-																	sendMessage(event, reply);
-																}
-
-															}, updateStateCounter);
-
-
-
-												}
-
-											}, updateMaths);
-
-								}
-								else if(results.state_counter>=3 && results.state_counter<6){
-									//update verbal part
-									var updateVerbal = "Update user set verbal_rating=math_rating+3 where messenger_id='"+sender+"'";
-									mysql.fetchData(
-											function(err, results) {
-												if (err) {
-													console.log("Error: Some problem with db"+err);
-													throw err;
-												} else {
-													console.log("updateVerbal rating updated");	
-
-													var updateStateCounter = "Update user set state_counter=state_counter+1 where messenger_id='"+sender+"'";
-													mysql.fetchData(
-															function(err, results) {
-																if (err) {
-																	console.log("Error: Some problem with db"+err);
-																	throw err;
-																} else {
-																	console.log("state_counter updated");
-																	reply = qArray[results.state_counter];
-																	sendMessage(event, reply);
-																}
-
-															}, updateStateCounter);
-
-
-
-												}
-
-											}, updateVerbal);
-								}
-							}else{
-								//wrong answer
-							}
-							//question = stateconter
-							reply = qArray[results.state_counter];
-							sendMessage(event, reply);
 						}
+
 						else{
-							//session not found. Ask user for his email id to continue
-							reply = "You've already attempted all the questions!";	
-							sendMessage(event, reply);
+							//Check the state count
+							if(results.state_counter<9){
+								//Check answer
+								if(aArray[results.state_counter] ===  text){
+									//Right answer
+									//update the math
+									if(results.state_counter<3){
+										//update maths part
+										var updateMaths = "Update user set math_rating=math_rating+3 where messenger_id='"+sender+"'";
+										mysql.fetchData(
+												function(err, results) {
+													if (err) {
+														console.log("Error: Some problem with db"+err);
+														throw err;
+													} else {
+														console.log("updateMaths rating");	
+
+														var updateStateCounter = "Update user set state_counter=state_counter+1 where messenger_id='"+sender+"'";
+														mysql.fetchData(
+																function(err, results) {
+																	if (err) {
+																		console.log("Error: Some problem with db"+err);
+																		throw err;
+																	} else {
+																		console.log("state_counter updated");	
+																		reply = qArray[results.state_counter];
+																		sendMessage(event, reply);
+																	}
+
+																}, updateStateCounter);
+
+
+
+													}
+
+												}, updateMaths);
+
+									}
+									else if(results.state_counter>=3 && results.state_counter<6){
+										//update verbal part
+										var updateVerbal = "Update user set verbal_rating=math_rating+3 where messenger_id='"+sender+"'";
+										mysql.fetchData(
+												function(err, results) {
+													if (err) {
+														console.log("Error: Some problem with db"+err);
+														throw err;
+													} else {
+														console.log("updateVerbal rating updated");	
+
+														var updateStateCounter = "Update user set state_counter=state_counter+1 where messenger_id='"+sender+"'";
+														mysql.fetchData(
+																function(err, results) {
+																	if (err) {
+																		console.log("Error: Some problem with db"+err);
+																		throw err;
+																	} else {
+																		console.log("state_counter updated");
+																		reply = qArray[results.state_counter];
+																		sendMessage(event, reply);
+																	}
+
+																}, updateStateCounter);
+
+
+
+													}
+
+												}, updateVerbal);
+									}
+								}else{
+									//wrong answer
+								}
+								//question = stateconter
+								reply = qArray[results.state_counter];
+								sendMessage(event, reply);
+							}
+							else{
+								//session not found. Ask user for his email id to continue
+								reply = "You've already attempted all the questions!";	
+								sendMessage(event, reply);
+							}
+
+
+
 						}
 
-
-
-					}
-
-					/*else{//Ask user his email id
+						/*else{//Ask user his email id
 						reply = "What is your email?"
 							//answer ="abhiram.304@gmail.com";
 						//Update messenger_id
 						sendMessage(event, reply); 
 					}*/
 
-				} 
+					} 
 
-			}, queryToCheckEmail);
-
-
+				}, queryToCheckEmail);
 
 
+
+	}
 
 	if(event.message.text == 'hello' || 'whats up' || 'hey'){
 
