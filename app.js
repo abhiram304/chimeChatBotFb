@@ -10,7 +10,7 @@ var express = require('express')
 , path = require('path');
 var request = require('request');
 var app = express();
-
+var mysql = require('mysql');
 //all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
