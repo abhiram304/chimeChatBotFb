@@ -199,6 +199,7 @@ function validateMessage(event){
 						console.log("Error: Some problem with db"+err);
 						throw err;
 					} else {
+						console.log("Workkkkk");
 						if(results.length>0){
 							//Email is attached with messenger_id
 							console.log("GT>0");
@@ -217,7 +218,7 @@ function validateMessage(event){
 
 						}else{//Ask user his email id
 							console.log("GT!>0");
-							reply = "What is your email?"
+							reply = "What is your email?";
 								
 							//Update messenger_id
 							sendMessage(event, reply); 
