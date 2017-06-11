@@ -28,6 +28,25 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+app.get('/test', function(req, res){
+	var qq = "Update user set state_counter=state_counter+1 where email ='neha2k74u@gmail.com'";
+	mysql.fetchData(
+			function(err, results) {
+				if (err) {
+					console.log("Error: Some problem with db"+err);
+					throw err;
+				} else {
+					console.log("Messenger id updated: "+JSON.stringify(results));
+					if(results.state_counter> 8){
+							reply ="You've already taken up this quiz. Thank you!";
+					}else{
+						reply = "ABBHBDAJB";
+					}
+					
+				}
+
+			}, qq);
+});
 app.get('/users', user.list);
 //Verify fb messnger
 app.get('/webhook', function(req, res) {
@@ -71,7 +90,7 @@ function validateMessage(event){
 						console.log("Error: Some problem with db"+err);
 						throw err;
 					} else {
-						console.log("Messenger id updated");
+						
 						if(results.state_counter> 8){
 								reply ="You've already taken up this quiz. Thank you!";
 						}else{
