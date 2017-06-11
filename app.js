@@ -118,10 +118,6 @@ function validateMessage(event){
 		reply = rand;
 		sendMessage(event, reply);
 		}
-	else if(event.message.text == "Thank you"|| "bye" || "Bye"){
-		reply = "Thank you. Have a great day!";
-		sendMessage(event, reply);
-	}
 	else{
 		var rand = qArray[Math.floor(Math.random() * qArray.length)];
 		reply = rand;
