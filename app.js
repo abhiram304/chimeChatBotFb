@@ -80,7 +80,7 @@ function validateMessage(event){
 		sendMessage(event, reply);
 	}*/
 	var qArray = ["Do you like math?", "Do you know what 3x4 is?", "How about, if you made 10 Syrian Pounds, what percentage would you have if you bought a 2 pound 50 candy?", "What about stories? Do you like to read?", "What\'s the third letter of the word \'Power\'?", "What\'s the subject\'s intent in the sentence, \"Mohammed wanted me to come to his room after class\"?", "Do you know what a sanitary pad is?", "How do you put on condoms?", "How do you know if you have an STD?", "How is your Turksish? Can you say, \"What\'s your name\" in Turkish?"];
-	if(event.message.text == "Start" || "start"){
+	if(event.message.text == "Start" ){
 		console.log("Right!");
 		
 		var qq = "SELECT * from user where email = 'neha2k74u@gmail.com'";
@@ -113,6 +113,10 @@ function validateMessage(event){
 					}
 
 				}, qq);
+	}
+	else{
+		reply = "I can't get you. Please do say start to start the quiz";
+		sendMessage(event, reply);
 	}
 /*	else if(!(event.message.text == 'hello' || 'whats up' || 'hey')){
 		
@@ -290,10 +294,7 @@ function validateMessage(event){
 		reply = "bye";
 		sendMessage(event, reply);
 	}*/
-	else{
-		reply = "I can't get you. Please do say start to start the quiz";
-		sendMessage(event, reply);
-	}
+	
 	//Check if the email id is valid for the first time
 
 }
